@@ -1,0 +1,14 @@
+[project]
+name = "ComfyUI_SigmoidOffsetScheduler"
+description = 'Scheduler for ComfyUI and an attempt at optimized scheduler for the Chroma architecture.'
+version = "1.0.0"
+license = { file = "LICENSE" }
+
+[project.urls]
+Repository = "https://github.com/silveroxides/ComfyUI_SigmoidOffsetScheduler"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = "silveroxides"
+DisplayName = "ComfyUI Sigmoid Offset Scheduler"
+Icon = ""
