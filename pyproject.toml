@@ -1,7 +1,7 @@
 [project]
 name = "ComfyUI_SigmoidOffsetScheduler"
 description = 'Scheduler for ComfyUI and an attempt at optimized scheduler for the Chroma architecture.'
-version = "1.0.0"
+version = "1.0.1"
 license = { file = "LICENSE" }
 
 [project.urls]
