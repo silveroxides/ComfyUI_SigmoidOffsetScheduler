@@ -4,7 +4,7 @@ import logging
 import numpy
 from comfy.samplers import SchedulerHandler, SCHEDULER_HANDLERS, SCHEDULER_NAMES
 
-def sigmoid_offset_scheduler(model_sampling, steps: int, square_k: float = 1.1, base_c: float = 0.5) -> torch.Tensor:
+def sigmoid_offset_scheduler(model_sampling, steps: int, square_k: float = 1.2, base_c: float = 0.6) -> torch.Tensor:
 
     if not hasattr(model_sampling, 'sigmas') or len(model_sampling.sigmas) < 2:
         logging.error("model_sampling object must have a 'sigmas' attribute with at least two values.")
@@ -15,7 +15,7 @@ def sigmoid_offset_scheduler(model_sampling, steps: int, square_k: float = 1.1, 
         sigma_max_val = float(model_sampling.sigmas[-1])
         return torch.FloatTensor([sigma_max_val, 0.0])
 
-    total_timesteps = len(model_sampling.sigmas) - 1
+    total_timesteps = (len(model_sampling.sigmas) -1)
     
     # Generate normalized sequence from 0 to 1 (exclusive)
     ts = numpy.linspace(0, 1, steps, endpoint=False)
@@ -56,7 +56,7 @@ def sigmoid_offset_scheduler(model_sampling, steps: int, square_k: float = 1.1, 
         last_t = t
     
     # Add final 0.0
-    sigs.append(0.0)
+    # sigs.append(0.0)
     
     return torch.FloatTensor(sigs)
 
@@ -73,8 +73,8 @@ class SigmoidOffsetScheduler:
         return {"required":
                     {"model": ("MODEL",),
                      "steps": ("INT", {"default": 30, "min": 1, "max": 10000}),
-                     "square_k": ("FLOAT", {"default": 1.1, "min": 0.0, "max": 5.0, "step":0.01, "round": False, "tooltip": "Sigmoid steepness factor. Higher values = steeper transition."}),
-                     "base_c": ("FLOAT", {"default": 0.5, "min": -5.0, "max": 5.0, "step":0.01, "round": False, "tooltip": "Control parameter (0.0-1.0) that shifts sigmoid curve. '< 0.5: More time at low sigmas (early denoising)' and '> 0.5: More time at high sigmas (late denoising)'."}),
+                     "square_k": ("FLOAT", {"default": 1.2, "min": 0.0, "max": 5.0, "step":0.01, "round": False, "tooltip": "Sigmoid steepness factor. Higher values = steeper transition."}),
+                     "base_c": ("FLOAT", {"default": 0.6, "min": -5.0, "max": 5.0, "step":0.01, "round": False, "tooltip": "Control parameter (0.0-1.0) that shifts sigmoid curve. '< 0.5: More time at low sigmas (early denoising)' and '> 0.5: More time at high sigmas (late denoising)'."}),
                       }
                }
     RETURN_TYPES = ("SIGMAS",)
